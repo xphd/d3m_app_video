@@ -1,0 +1,2 @@
+# d3m_app_video
+bash ta3_search shared/static/config_files/dev_mode/example_dev_video_LL1_3476_HMDB_actio_recognition.json
