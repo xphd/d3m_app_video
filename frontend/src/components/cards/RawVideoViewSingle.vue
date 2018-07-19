@@ -2,7 +2,7 @@
 <div>
     <p>{{ name }}</p>
     <div :id="id" v-show="playable">    
-        <video-player class="vjs-custom-skin"
+        <videoPlayer class="vjs-custom-skin"
                       ref="videoPlayer"
                       :options="playerOptions"
                       :playsinline="true"
@@ -17,7 +17,7 @@
                       @canplaythrough="onPlayerCanplaythrough($event)"
                       @ready="playerReadied"
                       @statechanged="playerStateChanged($event)">
-        </video-player>
+        </videoPlayer>
     </div>
     <div v-show="!playable">
       Video is not playable!
@@ -27,8 +27,12 @@
 </template>
 
 <script>
+import { videoPlayer } from "vue-video-player";
 export default {
   props: ["video"], // video is an object with id and url of video file
+  components: {
+    videoPlayer
+  },
   data: function() {
     return {
       playable: false,
