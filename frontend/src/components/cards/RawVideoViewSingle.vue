@@ -2,26 +2,26 @@
 <div>
     <p>{{ name }}</p>
     <div :id="id" v-show="playable">    
-    <video-player class="vjs-custom-skin"
-                  ref="videoPlayer"
-                  :options="playerOptions"
-                  :playsinline="true"
-                  @play="onPlayerPlay($event)"
-                  @pause="onPlayerPause($event)"
-                  @ended="onPlayerEnded($event)"
-                  @loadeddata="onPlayerLoadeddata($event)"
-                  @waiting="onPlayerWaiting($event)"
-                  @playing="onPlayerPlaying($event)"
-                  @timeupdate="onPlayerTimeupdate($event)"
-                  @canplay="onPlayerCanplay($event)"
-                  @canplaythrough="onPlayerCanplaythrough($event)"
-                  @ready="playerReadied"
-                  @statechanged="playerStateChanged($event)">
-  </video-player>
-</div>
-<div v-show="!playable">
-  Video is not playable!
-</div>
+        <video-player class="vjs-custom-skin"
+                      ref="videoPlayer"
+                      :options="playerOptions"
+                      :playsinline="true"
+                      @play="onPlayerPlay($event)"
+                      @pause="onPlayerPause($event)"
+                      @ended="onPlayerEnded($event)"
+                      @loadeddata="onPlayerLoadeddata($event)"
+                      @waiting="onPlayerWaiting($event)"
+                      @playing="onPlayerPlaying($event)"
+                      @timeupdate="onPlayerTimeupdate($event)"
+                      @canplay="onPlayerCanplay($event)"
+                      @canplaythrough="onPlayerCanplaythrough($event)"
+                      @ready="playerReadied"
+                      @statechanged="playerStateChanged($event)">
+        </video-player>
+    </div>
+    <div v-show="!playable">
+      Video is not playable!
+    </div>
     <hr>
 </div>
 </template>
@@ -31,6 +31,12 @@ export default {
   props: ["video"], // video is an object with id and url of video file
   data: function() {
     return {
+      playable: false,
+      // pass the video info
+      id: "video" + this.video.id,
+      link: this.video.link,
+      name: "",
+
       message: "Hi from Vue",
       // videojs options
       playerOptions: {
@@ -50,12 +56,7 @@ export default {
         ]
         // poster:
         //   "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg"
-      },
-      playable: false,
-      // pass the video info
-      id: "video" + this.video.id,
-      link: this.video.link,
-      name: ""
+      }
     };
   },
   computed: {
@@ -63,14 +64,12 @@ export default {
       return this.$refs.videoPlayer.player;
     }
   },
-
   mounted() {
     // console.log('this is current player instance object', this.player)
     setTimeout(() => {
-      console.log("dynamic change options", this.player);
+      // console.log("dynamic change options", this.player);
       this.player.muted(false);
     }, 2000);
-
     // get the name of audio file, that is the last part of link
     var temp = this.link.split("/");
     this.name = temp[temp.length - 1];
@@ -113,8 +112,7 @@ export default {
     // player is ready
     playerReadied(player) {
       // seek to 10s
-      console.log("example player 1 readied");
-
+      // console.log("example player 1 readied");
       player.currentTime(10);
       // console.log('example 01: the player is readied', player)
     }

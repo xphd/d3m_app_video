@@ -47,9 +47,9 @@ io.on("connection", socket => {
     var videoLinks = [];
 
     fs.readdirSync(VIDEO_FOLDER_PATH).forEach(subFolderPath => {
-      fs.readdirSync(VIDEO_FOLDER_PATH + "/" + subFolderPath).forEach(file => {
+      fs.readdirSync(VIDEO_FOLDER_PATH  + subFolderPath).forEach(file => {
         var link =
-          BASE_URL + VIDEO_FOLDER_PATH + "/" + subFolderPath + "/" + file;
+          BASE_URL + VIDEO_FOLDER_PATH  + subFolderPath + "/" + file;
         videoLinks.push(link);
       });
     });

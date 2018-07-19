@@ -5,7 +5,7 @@
             <RawVideoViewSingle :video='video' :key="video.id"></RawVideoViewSingle>
         </template>
     </div>
-    <p><strong>{{ indexOfLastLoaded+1 }}</strong> of {{ numOfvideoLinks }} Loaded</p>
+    <p><strong>{{ indexOfLastLoaded+1 }}</strong> of {{ numOfVideoLinks }} Loaded</p>
     <div v-if="isMoreVideos">
         Load Another
         <input type="number" min="1" max="500" v-model.number="numOfEachLoaded"> Videos
@@ -35,10 +35,11 @@ export default {
       numOfEachLoaded: 5, // numver of videos loaded each time the button is pressed
       videoLinks: [], // list of videos from backend response
       videos: [], // video objects, {id, videoLink} where auidoLink is from videoLinks
-      numOfVideoLinks: 0, // number of videoLinks totally, initialize as 0
+      numOfVideoLinks: 4, // number of videoLinks totally, initialize as 0
       isMoreVideos: true
     };
   },
+
   sockets: {
     connect: function() {
       // console.log("Client: connect to Server");
@@ -47,7 +48,7 @@ export default {
     responseVideoLinks: function(videoLinks) {
       this.$store.videoLinks = videoLinks;
       this.videoLinks = this.$store.videoLinks;
-      this.numOfvideoLinks = this.videoLinks.length; // update numOfvideoLinks
+      this.numOfVideoLinks = this.videoLinks.length; // update numOfVideoLinks
       this.loadVideos(this.numOfFirstLoaded); // when get videoLinks from backend, load some of them
     }
   },
@@ -71,7 +72,7 @@ export default {
       if (!this.isMoreVideos) {
         return;
       }
-      var len = this.numOfvideoLinks;
+      var len = this.numOfVideoLinks;
       var indexLastEnd = this.indexOfLastLoaded;
       var indexEnd = Math.min(indexLastEnd + numToLoad, len - 1);
       this.indexOfLastLoaded = indexEnd;
@@ -82,8 +83,8 @@ export default {
         };
         this.videos.push(video);
       }
-      // if all videos have been loaded, indexOfLastLoaded is same as numOfvideoLinks-1, no more video to load
-      if (this.indexOfLastLoaded == this.numOfvideoLinks - 1) {
+      // if all videos have been loaded, indexOfLastLoaded is same as numOfVideoLinks-1, no more video to load
+      if (this.indexOfLastLoaded == this.numOfVideoLinks - 1) {
         this.isMoreVideos = false;
       }
     },
