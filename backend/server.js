@@ -7,7 +7,7 @@ var app = express();
 var router = express.Router();
 
 const BASE_URL = "http://localhost:3000/";
-const VIDEO_FOLDER_PATH = "public/";
+const STATIC_VIDEO_FOLDER_PATH = "public/";
 
 // Add headers
 app.use(function(req, res, next) {
@@ -46,13 +46,14 @@ io.on("connection", socket => {
     // get the list of links to Video file in this server
     var videoLinks = [];
 
-    fs.readdirSync(VIDEO_FOLDER_PATH).forEach(subFolderPath => {
-      fs.readdirSync(VIDEO_FOLDER_PATH  + subFolderPath).forEach(file => {
-        var link =
-          BASE_URL + VIDEO_FOLDER_PATH  + subFolderPath + "/" + file;
+    fs.readdirSync(STATIC_VIDEO_FOLDER_PATH).forEach(subFolderPath => {
+      fs.readdirSync(STATIC_VIDEO_FOLDER_PATH + subFolderPath).forEach(file => {
+        var link = BASE_URL + subFolderPath + "/" + file;
+
         videoLinks.push(link);
       });
     });
+    videoLinks[0];
 
     // emit "returnVideoLinks" to the frontend with VideoLinks
     socket.emit("responseVideoLinks", videoLinks);
