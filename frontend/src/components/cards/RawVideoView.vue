@@ -14,6 +14,13 @@
     <div v-else>
         <button disabled class="btn btn-warning">No More videos</button>
     </div>
+    <br>
+    <div>
+        View First
+        <input type="number" min="1" :max="numOfVideoLinks" v-model.number="numOfLoaded"> Videos
+        <button @click="loadVideosTotal()" class="btn btn-success">Go!</button>
+    </div>
+
 </div>
 </template>
 
@@ -23,11 +30,12 @@ export default {
   data: function() {
     return {
       numOfFirstLoaded: 2, // numver of videos firstly loaded
+      numOfLoaded: 0, // total number of loaded video, this is just one more than indexOfLastLoaded
+      indexOfLastLoaded: -1, // record the index of the last loaded video
       numOfEachLoaded: 5, // numver of videos loaded each time the button is pressed
       videoLinks: [], // list of videos from backend response
       videos: [], // video objects, {id, videoLink} where auidoLink is from videoLinks
-      numOfvideoLinks: 0, // number of videoLinks totally, initialize as 0
-      indexOfLastLoaded: -1, // record the index of the last loaded video
+      numOfVideoLinks: 0, // number of videoLinks totally, initialize as 0
       isMoreVideos: true
     };
   },
@@ -44,6 +52,20 @@ export default {
     }
   },
   methods: {
+    loadVideosTotal() {
+      // calculate the difference between wanted number of loaded videos and current number of loaded Videos
+      var difference = this.numOfLoaded - (this.indexOfLastLoaded + 1);
+      console.log(this.numOfLoaded);
+      if (difference >= 0) {
+        // if difference > 0, aka wanted more than current, just load more "difference" Videos
+        this.loadVideos(difference);
+      } else {
+        // else, pick up the first wanted number of Videos, and update something
+        this.videos = this.videos.splice(0, this.numOfLoaded);
+        this.indexOfLastLoaded = this.numOfLoaded - 1;
+        this.isMoreVideos = true;
+      }
+    },
     loadVideos(numToLoad = this.numOfEachLoaded) {
       // if there is no more videos, then return
       if (!this.isMoreVideos) {
@@ -72,6 +94,7 @@ export default {
   },
   created() {
     this.requestVideoLinks();
+    this.numOfLoaded = this.numOfFirstLoaded;
   },
   components: {
     RawVideoViewSingle
